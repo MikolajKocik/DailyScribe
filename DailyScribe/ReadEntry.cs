@@ -6,7 +6,15 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DailyScribe
-{
+{  
+   /// <summary>
+   /// Obsługuje wybieranie i odczytywanie zawartości zapisanych notatek z plików tekstowych.
+   /// </summary>
+   /// <remarks>
+   /// Wczytuje plik entries.log zawierający listę nazw notatek,
+   /// pozwala użytkownikowi wybrać jedną z nich i wyświetla jej zawartość.
+   /// </remarks>
+   
     public class ReadEntry
     {
         public void Entries(string logPath)

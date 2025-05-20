@@ -16,11 +16,15 @@ class Program
             Console.WriteLine("Choose option below");
             Console.WriteLine("(1) Add new entry");
             Console.WriteLine("(2) Load entry");
-            Console.WriteLine("(3) Close");
+            Console.WriteLine("(3) Edit entry");
+            Console.WriteLine("(4) Delete entry");
+            Console.WriteLine("(5) Encrypt file");
+            Console.WriteLine("(6) Decrypt file");
+            Console.WriteLine("(7) Close");
 
             Console.WriteLine();
 
-            while (!int.TryParse(Console.ReadLine()?.Trim()!, out choice) || choice < 1 || choice > 3)
+            while (!int.TryParse(Console.ReadLine()?.Trim()!, out choice) || choice < 1 || choice > 6)
             {
                 Console.WriteLine($"Invalid choice: {choice}, try again: ");
             }
@@ -31,6 +35,7 @@ class Program
                     NewEntry create = new NewEntry();
                     create.Entry();
                     break;
+
                 case 2:
                     ReadEntry read = new ReadEntry();
 
@@ -49,11 +54,87 @@ class Program
 
                     read.Entries(logPath);
                     break;
+
+                case 3:
+                    EditEntry editText = new EditEntry();
+
+                    Console.WriteLine("Enter url of notes (with no file name)");
+
+                    var editFolderPath = Console.ReadLine()?.Trim()!;
+
+                    if(string.IsNullOrEmpty(editFolderPath) || !Directory.Exists(editFolderPath))
+                    {
+                        Console.WriteLine("Invalid path, try again: ");
+                        editFolderPath = Console.ReadLine()?.Trim()!;
+                    }
+
+                    Console.WriteLine("Enter file name");
+
+                    var userInput = Console.ReadLine()?.Trim()!;
+
+                    if (string.IsNullOrEmpty(userInput))
+                    {
+                        Console.WriteLine("Invalid file name, try again: ");
+                        userInput = Console.ReadLine()?.Trim()!;
+                    }
+
+                    var fullPath = Path.GetFullPath(editFolderPath, userInput);
+
+                    if(!File.Exists(fullPath))
+                    {
+                        Console.WriteLine("File not found");
+                        break;                   
+                    }
+
+                    editText.Edit(fullPath, userInput);
+                    break;
+
+                case 4:
+                    DeleteEntry deleteText = new DeleteEntry();
+
+                    Console.WriteLine("Enter url of notes (with no file name)");
+
+                    var deleteFolderPath = Console.ReadLine()?.Trim()!;
+
+                    if (string.IsNullOrEmpty(deleteFolderPath) || !Directory.Exists(deleteFolderPath))
+                    {
+                        Console.WriteLine("Invalid path, try again: ");
+                        deleteFolderPath = Console.ReadLine()?.Trim()!;
+                    }
+
+                    Console.WriteLine("Enter file name");
+
+                    var response = Console.ReadLine()?.Trim()!;
+
+                    if (string.IsNullOrEmpty(response))
+                    {
+                        Console.WriteLine("Invalid file name, try again: ");
+                        response = Console.ReadLine()?.Trim()!;
+                    }
+
+                    var getPath = Path.GetFullPath(deleteFolderPath, response);
+
+                    if (!File.Exists(getPath))
+                    {
+                        Console.WriteLine("File not found");
+                        break;
+                    }
+
+                    deleteText.Remove(getPath, response);                   
+
+                    break;
+                case 5:
+
+
+                    break;
+                case 6:
+                    break;
+
                 default:
                     Console.WriteLine("Closing program...");
                     break;
             }
 
-        }while (choice != 3);
+        }while (choice != 7);
     }
 }
