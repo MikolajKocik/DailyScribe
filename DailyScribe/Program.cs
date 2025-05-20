@@ -18,6 +18,8 @@ class Program
             Console.WriteLine("(2) Load entry");
             Console.WriteLine("(3) Close");
 
+            Console.WriteLine();
+
             while (!int.TryParse(Console.ReadLine()?.Trim()!, out choice) || choice < 1 || choice > 3)
             {
                 Console.WriteLine($"Invalid choice: {choice}, try again: ");
