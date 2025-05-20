@@ -1,11 +1,33 @@
-﻿using System;
+﻿using DailyScribe.Cryptography.AES;
+using System.Security.Cryptography;
 
 namespace DailyScribe;
 
-class Program
+public class Program
 {
-    static void Main(string[] args)
+    public const int iVSize = 16;
+    static async Task Main(string[] args)
     {
+        // AES section
+
+        Console.WriteLine("Provide file url directory");
+
+        var urlAesDestination = Console.ReadLine()?.Trim();
+
+        while (string.IsNullOrEmpty(urlAesDestination))
+        {
+            Console.WriteLine("Invalid url, try again: ");
+            urlAesDestination = Console.ReadLine()?.Trim();
+        }
+
+        var plaintext = await File.ReadAllTextAsync(urlAesDestination);
+
+        var masterKey = RandomNumberGenerator.GetBytes(32);
+
+        string? encrypted = null;
+
+        // ------------------------------
+
         int choice;
 
         do
@@ -62,7 +84,7 @@ class Program
 
                     var editFolderPath = Console.ReadLine()?.Trim()!;
 
-                    if(string.IsNullOrEmpty(editFolderPath) || !Directory.Exists(editFolderPath))
+                    while (string.IsNullOrEmpty(editFolderPath) || !Directory.Exists(editFolderPath))
                     {
                         Console.WriteLine("Invalid path, try again: ");
                         editFolderPath = Console.ReadLine()?.Trim()!;
@@ -72,7 +94,7 @@ class Program
 
                     var userInput = Console.ReadLine()?.Trim()!;
 
-                    if (string.IsNullOrEmpty(userInput))
+                    while (string.IsNullOrEmpty(userInput))
                     {
                         Console.WriteLine("Invalid file name, try again: ");
                         userInput = Console.ReadLine()?.Trim()!;
@@ -96,7 +118,7 @@ class Program
 
                     var deleteFolderPath = Console.ReadLine()?.Trim()!;
 
-                    if (string.IsNullOrEmpty(deleteFolderPath) || !Directory.Exists(deleteFolderPath))
+                    while (string.IsNullOrEmpty(deleteFolderPath) || !Directory.Exists(deleteFolderPath))
                     {
                         Console.WriteLine("Invalid path, try again: ");
                         deleteFolderPath = Console.ReadLine()?.Trim()!;
@@ -106,7 +128,7 @@ class Program
 
                     var response = Console.ReadLine()?.Trim()!;
 
-                    if (string.IsNullOrEmpty(response))
+                    while (string.IsNullOrEmpty(response))
                     {
                         Console.WriteLine("Invalid file name, try again: ");
                         response = Console.ReadLine()?.Trim()!;
@@ -125,9 +147,19 @@ class Program
                     break;
                 case 5:
 
-
+                    encrypted = AES_encryption.Encrypt(plaintext, masterKey);
+                    Console.WriteLine(encrypted);
                     break;
                 case 6:
+
+                    if (encrypted == null)
+                    {
+                        Console.WriteLine("Nothing to decrypt. Please encrypt something first");
+                        break;
+                    }
+                    var decrypted = AES_decryption.Decrypt(encrypted, masterKey);
+                    Console.WriteLine(decrypted);
+
                     break;
 
                 default:
