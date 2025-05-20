@@ -10,9 +10,8 @@ namespace DailyScribe
     {
         public void View()
         {
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Title = "Daily Scribe";
+            Console.ForegroundColor = ConsoleColor.Magenta;
         }
     }
 }
