@@ -3,10 +3,21 @@
 namespace DailyScribe
 {
     public delegate void Output(string message);
+
+    /// <summary>
+    /// Obsługuje proces tworzenia nowej notatki.
+    /// </summary>
+    /// <remarks>
+    /// - Zapisuje plik .txt z treścią notatki.
+    /// - Dodaje nazwę pliku do entries.log w tym samym folderze.
+    /// - entries.log używany jest później w klasie ReadEntry do odczytu listy.
+    /// </remarks>
+
     public class NewEntry
     {
         public void Entry()
         {
+
             Output information = (text) => Console.WriteLine(text);
 
             information("Name your header (min. 3 characters, letters and spaces only, max 10 characters)");
@@ -43,26 +54,23 @@ namespace DailyScribe
                 url = Console.ReadLine()!;
             }
 
-            if (!Directory.Exists(url))
-            {
-                try
-                {
-                    information("Directory did not exist, so it was createad");
-                    Directory.CreateDirectory(url!);
-                }
-                catch (Exception e)
-                {
-                    information("Couldnt create directory" + e.Message);
-                    return;
-                }
-            }
-
             var fileName = $"{DateTime.Now:HH-mm}-{header}.txt";
+
+            // Tworzy ścieżkę do pliku .txt w folderze wybranym przez użytkownika (url).
+            var filePath = Path.Combine(url!, fileName);
+
+            // Tworzy ścieżkę do pliku entries.log w folderze wybranym przez użytkownika (url).
+            // Ten plik zawiera listę nazw wszystkich zapisanych notatek (.txt),
+            // dzięki czemu można je później łatwo załadować w opcji "Load entry".
+            var logPath = Path.Combine(url!, "entries.log");
 
             try
             {
-                using StreamWriter writer = new StreamWriter(Path.Combine(url!, fileName));
+                using StreamWriter writer = new StreamWriter(filePath);
                 writer.WriteLine(body);
+
+                // ostatecznie zapisuje plik entries.log z nazwą pliku .txt + z nową linią
+                File.AppendAllText(logPath, fileName + Environment.NewLine);
             }
             catch (Exception e)
             {
