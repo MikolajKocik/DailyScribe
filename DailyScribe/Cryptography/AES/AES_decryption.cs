@@ -1,10 +1,11 @@
-﻿using System.Security.Cryptography;
+﻿using DailyScribe.Cryptography.AES.Interfaces;
+using System.Security.Cryptography;
 
 namespace DailyScribe.Cryptography.AES
 {
-    public static class AES_decryption
+    public class AES_decryption : IAES_decryption
     {
-       public static string Decrypt(string cipherText, byte[] masterKey)
+       public string Decrypt(string cipherText, byte[] masterKey)
         {
             try
             {
@@ -16,12 +17,12 @@ namespace DailyScribe.Cryptography.AES
                 byte[] iv = new byte[Program.iVSize];
                 byte[] encryptedData = new byte[cipherData.Length - Program.iVSize];
 
-                Buffer.BlockCopy(cipherData, 0, iv, 0, Program.iVSize);
-                Buffer.BlockCopy(cipherData, Program.iVSize, encryptedData, 0, encryptedData.Length);
+                Buffer.BlockCopy(cipherData, 0, iv, 0, Program.iVSize); // copying the 16 bytes
+                Buffer.BlockCopy(cipherData, Program.iVSize, encryptedData, 0, encryptedData.Length); // copying the rest bytes
 
                 using var aes = Aes.Create();
-                aes.Mode = CipherMode.CBC;
-                aes.Padding = PaddingMode.PKCS7;
+                aes.Mode = CipherMode.CBC; // encrypting mode, where every block depends on block before
+                aes.Padding = PaddingMode.PKCS7; // adding some bytes to '16' if needed
                 aes.Key = masterKey;
                 aes.IV = iv;
 

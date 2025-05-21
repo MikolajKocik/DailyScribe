@@ -8,5 +8,7 @@ namespace DailyScribe.Cryptography.AES.Interfaces
 {
     public interface IAES_decryption
     {
+        public string Decrypt(string cipherText, byte[] masterKey);
+
     }
 }

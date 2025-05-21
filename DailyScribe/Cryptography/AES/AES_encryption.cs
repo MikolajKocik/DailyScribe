@@ -1,10 +1,11 @@
-﻿using System.Security.Cryptography;
+﻿using DailyScribe.Cryptography.AES.Interfaces;
+using System.Security.Cryptography;
 
 namespace DailyScribe.Cryptography.AES
 {
-    public static class AES_encryption
+    public class AES_encryption : IAES_encryption
     {
-        public static string Encrypt(string plaintext, byte[] masterKey)
+        public string Encrypt(string plaintext, byte[] masterKey)
         {
             using var aes = Aes.Create();
             aes.Mode = CipherMode.CBC;

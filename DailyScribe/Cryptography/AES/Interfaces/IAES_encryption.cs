@@ -8,5 +8,6 @@ namespace DailyScribe.Cryptography.AES.Interfaces
 {
     public interface IAES_encryption
     {
+        public string Encrypt(string plaintext, byte[] masterKey);
     }
 }

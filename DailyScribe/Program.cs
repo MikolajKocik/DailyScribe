@@ -146,8 +146,8 @@ public class Program
 
                     break;
                 case 5:
-
-                    encrypted = AES_encryption.Encrypt(plaintext, masterKey);
+                    var encryptMode = new AES_encryption(); 
+                    encrypted = encryptMode.Encrypt(plaintext, masterKey);
                     Console.WriteLine(encrypted);
                     break;
                 case 6:
@@ -157,7 +157,9 @@ public class Program
                         Console.WriteLine("Nothing to decrypt. Please encrypt something first");
                         break;
                     }
-                    var decrypted = AES_decryption.Decrypt(encrypted, masterKey);
+
+                    var decryptMode = new AES_decryption();
+                    var decrypted = decryptMode.Decrypt(encrypted, masterKey);
                     Console.WriteLine(decrypted);
 
                     break;

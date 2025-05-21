@@ -4,6 +4,8 @@ VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyScribe", "DailyScribe\DailyScribe.csproj", "{6D041432-F4A6-4EBD-B21C-3B5EF29D05E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyScribe.Tests", "DailyScribe.Tests\DailyScribe.Tests.csproj", "{6F123AEE-6F47-440D-B006-991185EE77A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,10 @@ Global
 		{6D041432-F4A6-4EBD-B21C-3B5EF29D05E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D041432-F4A6-4EBD-B21C-3B5EF29D05E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D041432-F4A6-4EBD-B21C-3B5EF29D05E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F123AEE-6F47-440D-B006-991185EE77A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F123AEE-6F47-440D-B006-991185EE77A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F123AEE-6F47-440D-B006-991185EE77A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F123AEE-6F47-440D-B006-991185EE77A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
