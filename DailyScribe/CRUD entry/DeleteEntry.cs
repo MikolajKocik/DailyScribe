@@ -22,6 +22,9 @@ namespace DailyScribe
 
             string[] lines = File.ReadAllLines(filePath);
 
+            if(lineToDelete <= 0 || lineToDelete > lines.Length)
+                throw new ArgumentOutOfRangeException(nameof(lineToDelete), "Invalid line number.");
+
             // iterujemy po indeksach tablicy lines i usuwamy ten, który odpowiada podanemu numerowi
             lines = lines.Where((line, index) => index != lineToDelete - 1).ToArray();
 
