@@ -16,34 +16,14 @@ namespace DailyScribe
     
     public class DeleteEntry
     {
-        public string[] Remove(string filePath, string entryName)
+        public string[] Remove(string filePath, string entryName, int lineToDelete)
         {
             Output information = (text) => Console.WriteLine(text);
 
             string[] lines = File.ReadAllLines(filePath);
 
-            if (lines.Length == 0)
-            {
-                information($"Nothing to delete: {lines}");
-                return lines;
-            }
-
-            for (int i = 0; i < lines.Length; i++)
-            {              
-                information($"{i + 1} line. {lines[i]}");
-            }
-
-            information("Enter the line number you want to delete:");
-
-            int lineNumber;
-
-            while (!int.TryParse(Console.ReadLine()?.Trim(), out lineNumber) || lineNumber < 1 || lineNumber > lines.Length)
-            {
-                information("Invalid line number, try again: ");
-            }
-
             // iterujemy po indeksach tablicy lines i usuwamy ten, który odpowiada podanemu numerowi
-            lines = lines.Where((line, index) => index != lineNumber - 1).ToArray();
+            lines = lines.Where((line, index) => index != lineToDelete - 1).ToArray();
 
             File.WriteAllLines(filePath, lines);
 

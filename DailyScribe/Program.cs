@@ -5,28 +5,15 @@ namespace DailyScribe;
 
 public class Program
 {
-    public const int iVSize = 16;
+    public const int iVSize = 16;  
+
     static async Task Main(string[] args)
     {
-        // AES section
-
-        Console.WriteLine("Provide file url directory");
-
-        var urlAesDestination = Console.ReadLine()?.Trim();
-
-        while (string.IsNullOrEmpty(urlAesDestination))
-        {
-            Console.WriteLine("Invalid url, try again: ");
-            urlAesDestination = Console.ReadLine()?.Trim();
-        }
-
-        var plaintext = await File.ReadAllTextAsync(urlAesDestination);
+        string urlAesDestination;
 
         var masterKey = RandomNumberGenerator.GetBytes(32);
 
-        string? encrypted = null;
-
-        // ------------------------------
+        var encryptMode = new AES_encryption();
 
         int choice;
 
@@ -142,24 +129,75 @@ public class Program
                         break;
                     }
 
-                    deleteText.Remove(getPath, response);                   
+                    Console.WriteLine("Provide line number to delete ");
+
+                    string[] lines = File.ReadAllLines(getPath);
+
+                    if (lines.Length == 0)
+                    {
+                        Console.WriteLine($"Nothing to delete: {lines}");
+                        break;
+                    }
+
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        Console.WriteLine($"{i + 1} line. {lines[i]}");
+                    }
+
+                    var input = Console.ReadLine()?.Trim();
+
+                    int lineToDelete;
+
+                    while (!int.TryParse(input, out lineToDelete) || lineToDelete < 1 || lineToDelete > lines.Length)
+                    {
+                        Console.WriteLine("Bad input, try again");
+                        input = Console.ReadLine()?.Trim();
+                    }
+
+                    deleteText.Remove(getPath, response, lineToDelete);                   
 
                     break;
                 case 5:
-                    var encryptMode = new AES_encryption(); 
-                    encrypted = encryptMode.Encrypt(plaintext, masterKey);
+
+                    Console.WriteLine("Provide file url directory");
+
+                    urlAesDestination = Console.ReadLine()?.Trim()!;
+
+                    while (string.IsNullOrEmpty(urlAesDestination))
+                    {
+                        Console.WriteLine("Invalid url, try again: ");
+                        urlAesDestination = Console.ReadLine()?.Trim()!;
+                    }
+
+                    var plaintext = await File.ReadAllTextAsync(urlAesDestination);
+
+                    var encrypted = encryptMode.Encrypt(plaintext, masterKey);
                     Console.WriteLine(encrypted);
                     break;
                 case 6:
 
-                    if (encrypted == null)
+                    Console.WriteLine("Provide file url directory");
+
+                    urlAesDestination = Console.ReadLine()?.Trim()!;
+
+                    while (string.IsNullOrEmpty(urlAesDestination))
+                    {
+                        Console.WriteLine("Invalid url, try again: ");
+                        urlAesDestination = Console.ReadLine()?.Trim()!;
+                    }
+
+                    var text = await File.ReadAllTextAsync(urlAesDestination);
+
+                    var ciphertext = encryptMode.Encrypt(text, masterKey);
+
+                    if (ciphertext == null)
                     {
                         Console.WriteLine("Nothing to decrypt. Please encrypt something first");
                         break;
                     }
 
                     var decryptMode = new AES_decryption();
-                    var decrypted = decryptMode.Decrypt(encrypted, masterKey);
+                    var decrypted = decryptMode.Decrypt(ciphertext, masterKey);
                     Console.WriteLine(decrypted);
 
                     break;
