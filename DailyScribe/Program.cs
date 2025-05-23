@@ -250,6 +250,26 @@ public class Program
         catch (ArgumentOutOfRangeException ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
-        }      
+        }
+        catch (UriFormatException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        catch (DirectoryNotFoundException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        catch (IndexOutOfRangeException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.InnerException?.Message}");
+        }
     }
 }
