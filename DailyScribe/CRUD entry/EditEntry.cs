@@ -15,42 +15,20 @@ namespace DailyScribe
 
     public class EditEntry
     {
-        public string[] Edit(string filePath, string entryName)
+        public string[] Edit(string filePath, string entryName, string newText, int lineNumber)
         {
             Output information = (text) => Console.WriteLine(text);
 
             string[] lines = File.ReadAllLines(filePath);
 
+            if (!filePath.Equals(typeof(File)))
+                throw new UriFormatException("Bad url format");
+
             if (lines.Length == 0)
-            {
-                information($"Nothing to change: {lines}");
-                return lines;
-            }
+                throw new IndexOutOfRangeException("Nothing to change, no lines here");
 
-            for (int i = 0; i < lines.Length; i++)
-            {
-                information($"{i + 1} line. {lines[i]}");
-            }
-
-            information("Enter the line number you want to edit:");
-
-            int lineNumber;
-
-            while(!int.TryParse(Console.ReadLine()?.Trim(), out lineNumber) || lineNumber < 1 || lineNumber > lines.Length)
-            {
-                information("Invalid line number, try again: ");
-            }
-
-
-            information("Enter the new text for the line:");
-
-            string newText = Console.ReadLine()?.Trim()!;
-
-            while (string.IsNullOrEmpty(newText))
-            {
-                information("Invalid input. Please enter the new text for the line:");
-                newText = Console.ReadLine()?.Trim()!;
-            }
+            if (string.IsNullOrEmpty(newText))
+                throw new ArgumentException("Invalid parameter body");
 
             // odejmujemy -1 ze względu na wcześniejsze dodanie w pętli for
             lines[lineNumber - 1] = newText;

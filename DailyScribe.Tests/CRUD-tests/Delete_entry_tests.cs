@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DailyScribe.Tests
 {
-    public class Delete_entry
+    public class Delete_entry_tests
     {
         private readonly string _filePath = @"C:\Users\PC\OneDrive - Office 365\Pulpit\Inne\";
 

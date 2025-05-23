@@ -97,7 +97,37 @@ public class Program
                             break;
                         }
 
-                        editText.Edit(fullPath, userInput);
+                        string[] lines = File.ReadAllLines(fullPath);
+
+                        if (lines.Length == 0)
+                        {
+                            Console.WriteLine($"Nothing to change: {lines}");
+                            return;
+                        }
+
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1} line. {lines[i]}");
+                        }
+
+                        Console.WriteLine("Enter the line number you want to edit: ");
+
+                        int lineNumber;
+
+                        while (!int.TryParse(Console.ReadLine()?.Trim(), out lineNumber) || lineNumber < 1 || lineNumber > lines.Length)
+                        {
+                            Console.WriteLine("Invalid line number, try again: ");
+                        }
+
+                        string newText = Console.ReadLine()?.Trim()!;
+
+                        while (string.IsNullOrEmpty(newText))
+                        {
+                            Console.WriteLine("Invalid input. Please enter the new text for the line:");
+                            newText = Console.ReadLine()?.Trim()!;
+                        }
+
+                        editText.Edit(fullPath, userInput, newText, lineNumber);
                         break;
 
                     case 4:
@@ -133,17 +163,17 @@ public class Program
 
                         Console.WriteLine("Provide line number to delete ");
 
-                        string[] lines = File.ReadAllLines(getPath);
+                        string[] textLines = File.ReadAllLines(getPath);
 
-                        if (lines.Length == 0)
+                        if (textLines.Length == 0)
                         {
-                            Console.WriteLine($"Nothing to delete: {lines}");
+                            Console.WriteLine($"Nothing to delete: {textLines}");
                             break;
                         }
 
-                        for (int i = 0; i < lines.Length; i++)
+                        for (int i = 0; i < textLines.Length; i++)
                         {
-                            Console.WriteLine($"{i + 1} line. {lines[i]}");
+                            Console.WriteLine($"{i + 1} line. {textLines[i]}");
                         }
 
                         string? input = Console.ReadLine()?.Trim();
