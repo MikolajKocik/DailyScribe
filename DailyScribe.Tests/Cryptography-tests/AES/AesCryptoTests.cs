@@ -43,7 +43,7 @@ namespace DailyScribe.Tests
         }
 
         [Fact]
-        public void Master_Key_Should_Return_Not_Valid()
+        public void Master_Key_Should_Return_Key_Not_Valid()
         {
             var validKey = key;
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DailyScribe.Tests
+namespace DailyScribe.Tests.CRUD_tests
 {
     public class Delete_entry_tests
     {
