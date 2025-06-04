@@ -99,7 +99,23 @@ public class Program
                             logPath = Console.ReadLine()?.Trim();
                         }
 
-                        read.Entries(logPath);
+                        string[] entries = File.ReadAllLines(logPath);
+
+                        for (int i = 0; i < entries.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {entries[i]}");
+                        }
+
+                        Console.WriteLine("Choose number");
+
+                        int getNumber;
+
+                        while (!int.TryParse(Console.ReadLine()?.Trim(), out getNumber) || getNumber < 1 || getNumber > entries.Length)
+                        {
+                            Console.WriteLine("Invalid choice / bad format, try again: ");
+                        }
+
+                        read.Entries(logPath, entries, getNumber);
                         break;
 
                     case 3:

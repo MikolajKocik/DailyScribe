@@ -17,28 +17,15 @@ namespace DailyScribe
    
     public class ReadEntry
     {
-        public void Entries(string logPath)
+        public string[] Entries(string logPath, string[] entries, int getNumber)
         {
             // delegata
             Output information = (text) => Console.WriteLine(text);
 
-            string[] entries = File.ReadAllLines(logPath);
+            if (getNumber > entries.Length)
+                throw new IndexOutOfRangeException("Provided number is out of the entries array bounds.");
 
-            for (int i = 0; i < entries.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}. {entries[i]}");
-            }
-
-            information("Choose number");
-
-            int choice;
-
-            while (!int.TryParse(Console.ReadLine()?.Trim(), out choice) || choice < 1 || choice > entries.Length) 
-            {
-                information("Invalid choice / bad format, try again: ");
-            }
-
-            var fileName = entries[choice - 1];
+            var fileName = entries[getNumber - 1];
 
             var directoryPath = Path.GetDirectoryName(logPath);
 
@@ -49,6 +36,10 @@ namespace DailyScribe
             string content = reader.ReadToEnd();
 
             information(content);
+
+            string[] stringArray = content.Split(", ", content.Length);
+
+            return stringArray;
         }
     }
 }
