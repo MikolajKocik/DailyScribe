@@ -15,44 +15,15 @@ namespace DailyScribe
 
     public class NewEntry
     {
-        public void Entry()
+        public void Entry(string header, string body, string url)
         {
 
-            Output information = (text) => Console.WriteLine(text);
-
-            information("Name your header (min. 3 characters, letters and spaces only, max 10 characters)");
-
-            var header = Console.ReadLine()?.Trim();
-
-            string headerPattern = @"^[a-zA-Z\s]+$";
-
-            while (string.IsNullOrWhiteSpace(header) || !Regex.IsMatch(header, headerPattern)
-                || (header.Length < 3 || header.Length > 10))
+            if (string.IsNullOrWhiteSpace(url))
             {
-                information("Your header must consist of 3 to 10 characters (letters and spaces only). Invalid input, try again:");
-                header = Console.ReadLine()!;
+                throw new ArgumentNullException(nameof(url), "URL cannot be null or empty");
             }
 
-            information("Provide your text message");
-
-            var body = Console.ReadLine()?.Trim();
-
-            while (string.IsNullOrWhiteSpace(body) || body.Length > 300)
-            {
-                information("Maximum limit of message characters is 300, try again");
-                body = Console.ReadLine()!;
-            }
-
-            information("Provide url destination note");
-            var url = Console.ReadLine()?.Trim();
-
-            string pattern = @"^(?:[a-zA-Z]:\\|\\\\)(?:[^<>:""/\\|?*]+\\)*[^<>:""/\\|?*]+$";
-
-            while (url is null || !Regex.IsMatch(url, pattern, RegexOptions.IgnoreCase))
-            {
-                information("Provided url is not valid, try again");
-                url = Console.ReadLine()!;
-            }
+            Output information = (text) => Console.WriteLine(text);         
 
             var fileName = $"{DateTime.Now:HH-mm}-{header}.txt";
 
@@ -67,7 +38,7 @@ namespace DailyScribe
             try
             {
                 using StreamWriter writer = new StreamWriter(filePath);
-                writer.WriteLine(body);
+                writer.Write(body);
 
                 // ostatecznie zapisuje plik entries.log z nazwą pliku .txt + z nową linią
                 File.AppendAllText(logPath, fileName + Environment.NewLine);

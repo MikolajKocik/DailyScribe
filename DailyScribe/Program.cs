@@ -1,5 +1,6 @@
 ﻿using DailyScribe.Cryptography.AES;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace DailyScribe;
 
@@ -44,7 +45,42 @@ public class Program
                 {
                     case 1:
                         NewEntry create = new NewEntry();
-                        create.Entry();
+
+                        Console.WriteLine("Name your header (min. 3 characters, letters and spaces only, max 10 characters)");
+
+                        var header = Console.ReadLine()?.Trim();
+
+                        string headerPattern = @"^[a-zA-Z\s]+$";
+
+                        while (string.IsNullOrWhiteSpace(header) || !Regex.IsMatch(header, headerPattern)
+                            || (header.Length < 3 || header.Length > 10))
+                        {
+                            Console.WriteLine("Your header must consist of 3 to 10 characters (letters and spaces only). Invalid input, try again:");
+                            header = Console.ReadLine()!;
+                        }
+
+                        Console.WriteLine("Provide your text message");
+
+                        var body = Console.ReadLine()?.Trim();
+
+                        while (string.IsNullOrWhiteSpace(body) || body.Length > 300)
+                        {
+                            Console.WriteLine("Maximum limit of message characters is 300, try again");
+                            body = Console.ReadLine()!;
+                        }
+
+                        Console.WriteLine("Provide url destination note");
+                        var url = Console.ReadLine()?.Trim();
+
+                        string pattern = @"^(?:[a-zA-Z]:\\|\\\\)(?:[^<>:""/\\|?*]+\\)*[^<>:""/\\|?*]+$";
+
+                        while (url is null || !Regex.IsMatch(url, pattern, RegexOptions.IgnoreCase))
+                        {
+                            Console.WriteLine("Provided url is not valid, try again");
+                            url = Console.ReadLine()!;
+                        }
+
+                        create.Entry(header, body, url);
                         break;
 
                     case 2:
